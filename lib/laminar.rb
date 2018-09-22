@@ -1,5 +1,5 @@
 require "laminar/version"
+require "laminar/particle"
 
 module Laminar
-  # Your code goes here...
 end
