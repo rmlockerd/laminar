@@ -1,5 +1,9 @@
 module Laminar
   class Context < Hash
+    def self.build(context = {})
+      self === context ? context : new.merge!(context)
+    end
+
     def success?
       !failed?
     end
@@ -8,9 +12,14 @@ module Laminar
       !@failed.nil?
     end
 
-    def fail(context = {})
+    def fail!(context = {})
       @failed = true
       merge!(context)
+      raise ParticleFailed, self
+    end
+
+    def history
+      @history
     end
 
     def record(particle)

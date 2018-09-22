@@ -14,21 +14,34 @@ module Laminar
       def call(context = {})
         new(context).invoke
       end
+
+      def call!(context = {})
+        new(context).invoke!
+      end
     end
 
     def initialize(context = {})
-      @context = context
+      @context = Context.build(context)
     end
 
     def invoke
-      call(context_slice)
-      @context
+      invoke!
+    rescue ParticleFailed
+      context
     end
+
+    def invoke!
+      call(context_slice)
+      context.record(self)
+      context
+    end
+
+    def call; end
 
     private
 
     def context_slice
-      @context.select { |k, _v| introspect_params.include?(k) }
+      context.select { |k, _v| introspect_params.include?(k) }
     end
 
     # Returns an array of keyword parameters that the instance expects
@@ -36,7 +49,7 @@ module Laminar
     # a variable set of arguments, returns the current context keys.
     def introspect_params
       params = self.class.instance_method(:call).parameters
-      return @context.keys if params.map(&:first).include?(:keyrest)
+      return context.keys if params.map(&:first).include?(:keyrest)
       params.map(&:last)
     end
   end
