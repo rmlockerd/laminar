@@ -1,4 +1,6 @@
 # Laminar
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/laminar`. To experiment with that code, run `bin/console` for an interactive prompt.
 
