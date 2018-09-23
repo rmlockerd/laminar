@@ -1,7 +1,10 @@
 module Laminar
+  # The environment and state of a particle (or flow) invocation. The
+  # context provides data required for a particle to do its job. A particle can
+  # modify the context during execution to return results, errors, etc.
   class Context < Hash
     def self.build(context = {})
-      self === context ? context : new.merge!(context)
+      self == context ? context : new.merge!(context)
     end
 
     def success?
@@ -18,9 +21,7 @@ module Laminar
       raise ParticleFailed, self
     end
 
-    def history
-      @history
-    end
+    attr_reader :history
 
     def record(particle)
       _history << particle
