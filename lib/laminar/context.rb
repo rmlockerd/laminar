@@ -4,7 +4,7 @@ module Laminar
   # modify the context during execution to return results, errors, etc.
   class Context < Hash
     def self.build(context = {})
-      self == context ? context : new.merge!(context)
+      self === context ? context : new.merge!(context || {})
     end
 
     def success?

@@ -111,7 +111,7 @@ module Laminar
       #   that returns true is the given context contains the minimum required
       #   information.
       def call(*)
-        step = flowspec.steps[:first_step]
+        step = flowspec.steps[flowspec.first_step]
         loop do
           break unless invoke_step(step)
           step = next_step(step)
@@ -132,10 +132,10 @@ module Laminar
       def next_step(current)
         next_name = current.next_step_name(self)
         return nil unless next_name && next_name != :endflow
-        unless flowspec.steps.key?(name)
-          raise FlowError, "No rule with name or alias of #{name}"
+        unless flowspec.steps.key?(next_name)
+          raise FlowError, "No rule with name or alias of #{next_name}"
         end
-        flowspec.steps[name]
+        flowspec.steps[next_name]
       end
     end
   end

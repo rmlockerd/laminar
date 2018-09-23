@@ -28,8 +28,6 @@ module Laminar
         branches << Branch.new(target, options)
       end
 
-      private
-
       # Find the next rule in the flow. Examines the branches associated
       # with the current rule and returns the name of the first branch
       # that satisfies its condition.
