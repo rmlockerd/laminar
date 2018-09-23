@@ -110,7 +110,7 @@ module Laminar
       #   implementing flow class should provide a #context_valid? method
       #   that returns true is the given context contains the minimum required
       #   information.
-      def call
+      def call(*)
         step = flowspec.steps[:first_step]
         loop do
           break unless invoke_step(step)
