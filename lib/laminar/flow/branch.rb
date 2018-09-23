@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
+require 'laminar/flow/options_validator'
+
 module Laminar
   module Flow
     # Specification for a target rule transition.
     class Branch
+      include OptionsValidator
+
+      VALID_OPTIONS_FOR_BRANCH = %i[if if_not].freeze
+
       # @!attribute name
       #   @return target rule to branch to
       #
@@ -12,7 +18,7 @@ module Laminar
       attr_accessor :name, :condition, :condition_type
 
       def initialize(name, options = {})
-        validate_options(options)
+        validate_options(VALID_OPTIONS_FOR_BRANCH, options)
         @name = name.to_sym
         define_condition(options)
       end
@@ -38,16 +44,6 @@ module Laminar
         @condition = options[@condition_type]
         return if @condition.nil? || @condition.is_a?(Symbol)
         raise TypeError, 'condition must be a method (symbol).'
-      end
-
-      VALID_OPTIONS_FOR_BRANCH = %i[if if_not].freeze
-      def validate_options(options)
-        options.each_key do |k|
-          unless VALID_OPTIONS_FOR_BRANCH.include?(k)
-            raise ArgumentError, "Unknown key: #{k.inspect}. Valid keys are: "\
-              "#{VALID_OPTIONS_FOR_BRANCH.map(&:inspect).join(', ')}."
-          end
-        end
       end
     end
   end

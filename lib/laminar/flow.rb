@@ -113,15 +113,19 @@ module Laminar
       def call
         step = flowspec.steps[:first_step]
         loop do
-          break if step.nil?
-          step.particle.call(context)
-          break if context.failed?
+          break unless invoke_step(step)
           step = next_step(step)
         end
         context
       end
 
       private
+
+      def invoke_step(step)
+        return if step.nil?
+        step.particle.call(context)
+        context.success?
+      end
 
       # Given a step, returns the next step that satisfies the
       # execution/branch conditions.

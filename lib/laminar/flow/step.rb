@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'laminar/flow/options_validator'
 require 'active_support'
 require 'active_support/core_ext/string/inflections'
 
@@ -7,10 +8,13 @@ module Laminar
   module Flow
     # Specification for an executable step in a Flow.
     class Step
+      include OptionsValidator
       attr_reader :name, :branches, :class_name
 
+      VALID_OPTIONS_FOR_STEP = %i[class].freeze
+
       def initialize(name, options = {})
-        validate_options(options)
+        validate_options(VALID_OPTIONS_FOR_STEP, options)
         @class_name = (options[:class] || name).to_s.camelize
         @name = name
         @branches = BranchList.new
@@ -33,16 +37,6 @@ module Laminar
         branch = @branches.first_applicable(impl_context)
         return if branch.nil?
         branch.name
-      end
-
-      VALID_OPTIONS_FOR_STEP = %i[class].freeze
-      def validate_options(options)
-        options.each_key do |k|
-          unless VALID_OPTIONS_FOR_STEP.include?(k)
-            raise ArgumentError, "Unknown key: #{k.inspect}. Valid keys are: "\
-              "#{VALID_OPTIONS_FOR_STEP.map(&:inspect).join(', ')}."
-          end
-        end
       end
     end
   end
