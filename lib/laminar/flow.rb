@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'laminar/flow/branch_list'
 require 'laminar/flow/branch'
 require 'laminar/flow/flow_error'
 require 'laminar/flow/step'

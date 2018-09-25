@@ -34,7 +34,7 @@ module Laminar
       # with the current rule and returns the name of the first branch
       # that satisfies its condition.
       def next_step_name(impl_context)
-        branch = @branches.first_applicable(impl_context)
+        branch = first_applicable_branch(impl_context)
         return if branch.nil?
         branch.name
       end
