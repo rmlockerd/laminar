@@ -232,13 +232,13 @@ You can use the special symbol :endflow to jump terminate the flow
 
 #### Conditional Branching
 
-Branches can be made conditional with the `if_true:` and `if_false:`
+Branches can be made conditional with the `if:` and `unless:`
 directives.
 
 ```ruby
   flow do
     step :first do
-      goto :last_step, if_true: :done_early?      
+      goto :last_step, if: :done_early?      
     end
     step :then_me
     step :do_something
@@ -246,12 +246,12 @@ directives.
   end
 ```
 
-The target of `if_true:` or `if_false:` is a symbol naming a method on the invoking Flow.
+The target of `if:` or `unless:` is a symbol naming a method on the invoking Flow.
 
 ```ruby
   flow do
     step :first do
-      goto :last_step, if_true: :done_early?      
+      goto :last_step, if: :done_early?      
     end
     ...
   end

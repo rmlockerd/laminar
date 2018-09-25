@@ -59,7 +59,7 @@ module Laminar
   #   flow do
   #     step :first do
   #       goto :last_step, if: :should_i?
-  #       goto :do_something, if: :another?
+  #       goto :do_something, unless: :another?
   #     end
   #     step :then_me
   #     step :do_something

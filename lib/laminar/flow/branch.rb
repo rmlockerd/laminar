@@ -8,7 +8,7 @@ module Laminar
     class Branch
       include OptionsValidator
 
-      VALID_OPTIONS_FOR_BRANCH = %i[if if_not].freeze
+      VALID_OPTIONS_FOR_BRANCH = %i[if unless].freeze
 
       # @!attribute name
       #   @return target rule to branch to
