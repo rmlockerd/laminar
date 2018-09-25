@@ -17,13 +17,15 @@ module Laminar
         validate_options(VALID_OPTIONS_FOR_STEP, options)
         @class_name = (options[:class] || name).to_s.camelize
         @name = name
-        @branches = BranchList.new
+        @branches = []
       end
 
+      # Return class instance of the associated particle.
       def particle
         class_name.constantize
       end
 
+      # Add a branch specification to the step.
       def add_branch(target, options = {})
         branches << Branch.new(target, options)
       end
@@ -35,6 +37,14 @@ module Laminar
         branch = @branches.first_applicable(impl_context)
         return if branch.nil?
         branch.name
+      end
+
+      # Return the first branch that satisfies its condition.
+      def first_applicable_branch(target)
+        branches.each do |branch|
+          return branch if branch.meets_condition?(target)
+        end
+        nil
       end
     end
   end
