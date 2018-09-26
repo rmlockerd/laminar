@@ -8,7 +8,7 @@ module Laminar
     class Branch
       include OptionsValidator
 
-      VALID_OPTIONS_FOR_BRANCH = %i[if unless].freeze
+      valid_options %i[if unless].freeze
 
       # @!attribute name
       #   @return target rule to branch to
@@ -18,7 +18,8 @@ module Laminar
       attr_accessor :name, :condition, :condition_type
 
       def initialize(name, options = {})
-        validate_options(VALID_OPTIONS_FOR_BRANCH, options)
+        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
+        validate_options(options)
         @name = name.to_sym
         define_condition(options)
       end
@@ -39,7 +40,7 @@ module Laminar
       end
 
       def define_condition(options)
-        @condition_type = (options.keys & %i[if if_not]).first
+        @condition_type = (options.keys & %i[if unless]).first
         return if @condition_type.nil?
         @condition = options[@condition_type]
         return if @condition.nil? || @condition.is_a?(Symbol)

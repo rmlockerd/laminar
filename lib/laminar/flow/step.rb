@@ -11,13 +11,16 @@ module Laminar
       include OptionsValidator
       attr_reader :name, :branches, :class_name
 
-      VALID_OPTIONS_FOR_STEP = %i[class].freeze
+      valid_options %i[class].freeze
 
-      def initialize(name, options = {})
-        validate_options(VALID_OPTIONS_FOR_STEP, options)
+      def initialize(name, options = {}, &gotos)
+        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
+        validate_options(options)
         @class_name = (options[:class] || name).to_s.camelize
-        @name = name
+        @name = name.to_sym
         @branches = []
+
+        instance_eval(&gotos) if gotos
       end
 
       # Return class instance of the associated particle.
@@ -26,9 +29,10 @@ module Laminar
       end
 
       # Add a branch specification to the step.
-      def add_branch(target, options = {})
+      def branch(target, options = {})
         branches << Branch.new(target, options)
       end
+      alias :goto :branch
 
       # Find the next rule in the flow. Examines the branches associated
       # with the current rule and returns the name of the first branch
