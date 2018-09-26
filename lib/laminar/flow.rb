@@ -123,8 +123,8 @@ module Laminar
 
       def invoke_step(step)
         return if step.nil?
-        step.particle.call(context)
-        context.success?
+        step.particle.call!(context)
+        context.halted?
       end
 
       # Given a step, returns the next step that satisfies the
