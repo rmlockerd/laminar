@@ -44,6 +44,29 @@ module Laminar
             expect(step.class_name).to eq('Bunny::Floppy')
           end
         end
+
+        context 'when passed a block of branches' do
+          let(:branch_block) { Proc.new { branch :endflow } }
+          let(:branch) { instance_double('Laminar::Flow::Branch', name: :endflow) }
+
+          it 'creates branches' do
+            expect(Laminar::Flow::Branch).to receive(:new).once
+                                                          .with(:endflow, {}) { branch }
+            step = described_class.new(:step1, &branch_block)
+            expect(step.branches.size).to be 1
+            expect(step.branches).to include(branch)
+          end
+        end
+        context 'when passed a block (not branches)' do
+          let(:branch_block) { Proc.new { floopy } }
+          let(:branch) { instance_double('Laminar::Flow::Branch', name: :endflow) }
+
+          it 'raises and error' do
+            expect {
+              described_class.new(:step1, &branch_block)
+            }.to raise_error(NameError)
+          end
+        end
       end
 
       describe '#branch' do

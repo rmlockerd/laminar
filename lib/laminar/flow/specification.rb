@@ -25,7 +25,7 @@ module Laminar
 
       private
 
-      def add_step(name, options, &gotos)
+      def add_step(name, options = {}, &gotos)
         raise ArgumentError, "Step #{name} defined twice" if @steps.key?(name)
         step = Step.new(name, options, &gotos)
         @first_step ||= step.name
