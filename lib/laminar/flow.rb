@@ -110,6 +110,7 @@ module Laminar
       #   that returns true is the given context contains the minimum required
       #   information.
       def call(*)
+        return context if flowspec.nil?
         step = flowspec.steps[flowspec.first_step]
         loop do
           break unless invoke_step(step)

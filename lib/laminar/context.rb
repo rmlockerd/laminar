@@ -7,28 +7,32 @@ module Laminar
       self === context ? context : new.merge!(context || {})
     end
 
+    def initialize
+      @halted = false
+      @failed = false
+    end
+
     def success?
       !failed?
     end
 
     def failed?
-      !@failed.nil?
+      @failed
+    end
+
+    def halted?
+      @halted
+    end
+
+    def halt(context = {})
+      @halted = true
+      merge!(context)
     end
 
     def fail!(context = {})
+      halt(context)
       @failed = true
-      merge!(context)
       raise ParticleFailed, self
-    end
-
-    attr_reader :history
-
-    def record(particle)
-      _history << particle
-    end
-
-    def _history
-      @history ||= []
     end
   end
 end

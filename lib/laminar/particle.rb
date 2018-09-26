@@ -33,9 +33,8 @@ module Laminar
     def invoke!
       param_list = context_slice
       param_list.empty? ? call : call(context_slice)
-      context.record(self)
-      context
     end
+    
     def call; end
 
     private
