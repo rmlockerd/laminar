@@ -23,6 +23,24 @@ module Laminar
         @prev_step = step
       end
 
+      def before_each(*args, &block)
+        before_step_callbacks.concat(args)
+        before_step_callbacks << block if block
+      end
+
+      def after_each(*args, &block)
+        after_step_callbacks.concat(args)
+        after_step_callbacks << block if block
+      end
+
+      def before_step_callbacks
+        @before_step_callbacks ||= []
+      end
+
+      def after_step_callbacks
+        @after_step_callbacks ||= []
+      end
+
       private
 
       def add_step(name, options = {}, &gotos)

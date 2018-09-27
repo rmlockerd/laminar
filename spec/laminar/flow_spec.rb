@@ -40,6 +40,8 @@ module Laminar
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(step).to receive(:particle).and_return(particle)
+        allow(spec).to receive(:before_step_callbacks).and_return([])
+        allow(spec).to receive(:after_step_callbacks).and_return([])
         allow(step).to receive(:next_step_name).and_return(nil)
         expect(particle).to receive(:call!).once
 
@@ -53,6 +55,8 @@ module Laminar
         allow(Laminar::Flow::Specification).to receive(:new).and_return(spec)
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
+        allow(spec).to receive(:before_step_callbacks).and_return([])
+        allow(spec).to receive(:after_step_callbacks).and_return([])
         allow(step).to receive(:particle).and_return(particle)
         expect(particle).to receive(:call!).once { raise Laminar::ParticleStopped }
 

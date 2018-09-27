@@ -78,7 +78,6 @@ module Laminar
     def self.included(base)
       base.class_eval do
         include Particle
-
         extend ClassMethods
         include InstanceMethods
       end
@@ -125,8 +124,9 @@ module Laminar
 
       def invoke_step(step)
         return if step.nil?
-
+        run_callbacks(flowspec.before_step_callbacks)
         step.particle.call!(context)
+        run_callbacks(flowspec.after_step_callbacks)
         !context.halted?
       end
 
