@@ -1,4 +1,6 @@
 # Laminar
+[![Build Status](https://img.shields.io/travis/rmlockerd/laminar/master.svg)]
+(https://travis-ci.org/rmlockerd/laminar)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 

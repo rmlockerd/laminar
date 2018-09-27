@@ -1,8 +1,5 @@
 ---
 sudo: false
-env:
-  global:
-    - CC_TEST_REPORTER_ID=749e6dbc26a0c80d62d652a4e6eac4871172841d233d1f5bd1261fc2ecc3ffc8
 language: ruby
 cache: bundler
 rvm:
