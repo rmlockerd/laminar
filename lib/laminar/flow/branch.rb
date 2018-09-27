@@ -18,7 +18,10 @@ module Laminar
       attr_accessor :name, :condition, :condition_type
 
       def initialize(name, options = {})
-        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
+        unless name.class.method_defined?(:to_sym)
+          raise ArgumentError, 'invalid name'
+        end
+
         validate_options(options)
         @name = name.to_sym
         define_condition(options)
@@ -29,6 +32,7 @@ module Laminar
       # @return [Boolean] true if condition is satisfied in the context.
       def meets_condition?(target)
         return true if condition.nil?
+
         result = run_condition(target)
         condition_type == :if ? result : !result
       end
@@ -42,8 +46,10 @@ module Laminar
       def define_condition(options)
         @condition_type = (options.keys & %i[if unless]).first
         return if @condition_type.nil?
+
         @condition = options[@condition_type]
         return if @condition.nil? || @condition.is_a?(Symbol)
+
         raise TypeError, 'condition must be a method (symbol).'
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'laminar/version'
 require 'laminar/particle'
 require 'laminar/particle_failed'

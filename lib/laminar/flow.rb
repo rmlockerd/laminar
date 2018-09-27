@@ -111,9 +111,11 @@ module Laminar
       #   information.
       def call(*)
         return context if flowspec.nil?
+
         step = flowspec.steps[flowspec.first_step]
         loop do
           break unless invoke_step(step)
+
           step = next_step(step)
         end
         context
@@ -123,6 +125,7 @@ module Laminar
 
       def invoke_step(step)
         return if step.nil?
+
         step.particle.call!(context)
         !context.halted?
       end
@@ -135,6 +138,7 @@ module Laminar
         unless flowspec.steps.key?(next_name)
           raise FlowError, "No rule with name or alias of #{next_name}"
         end
+
         flowspec.steps[next_name]
       end
     end

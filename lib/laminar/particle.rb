@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Laminar
   # Base methods for a logic particle. Particles can be invoked
   # by themselves or as part of a Flow. Classes should include
@@ -34,7 +36,7 @@ module Laminar
       param_list = context_slice
       param_list.empty? ? call : call(context_slice)
     end
-    
+
     def call; end
 
     private
@@ -49,6 +51,7 @@ module Laminar
     def introspect_params
       params = self.class.instance_method(:call).parameters
       return context.keys if params.map(&:first).include?(:keyrest)
+
       params.map(&:last)
     end
   end

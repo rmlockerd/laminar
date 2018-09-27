@@ -14,7 +14,10 @@ module Laminar
       valid_options %i[class].freeze
 
       def initialize(name, options = {}, &gotos)
-        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
+        unless name.class.method_defined?(:to_sym)
+          raise ArgumentError, 'invalid name'
+        end
+
         validate_options(options)
         @class_name = (options[:class] || name).to_s.camelize
         @name = name.to_sym
@@ -32,7 +35,7 @@ module Laminar
       def branch(target, options = {})
         branches << Branch.new(target, options)
       end
-      alias :goto :branch
+      alias goto branch
 
       # Find the next rule in the flow. Examines the branches associated
       # with the current rule and returns the name of the first branch
@@ -40,6 +43,7 @@ module Laminar
       def next_step_name(impl_context)
         branch = first_applicable_branch(impl_context)
         return if branch.nil?
+
         branch.name
       end
 

@@ -19,7 +19,7 @@ module Laminar
         # case where execution just falls through to the next step where they
         # haven't specified any explicit branching or none of the branch
         # conditions get met.
-        @prev_step.branch(step.name) unless @prev_step.nil?
+        @prev_step&.branch(step.name)
         @prev_step = step
       end
 
@@ -27,6 +27,7 @@ module Laminar
 
       def add_step(name, options = {}, &gotos)
         raise ArgumentError, "Step #{name} defined twice" if @steps.key?(name)
+
         step = Step.new(name, options, &gotos)
         @first_step ||= step.name
         @steps[step.name] = step
