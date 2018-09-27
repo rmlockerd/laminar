@@ -1,7 +1,7 @@
 module Laminar
   RSpec.describe Flow do
     include_examples 'particle_common'
-    
+
     let(:flow) { Class.new.send(:include, Laminar::Flow) }
     let(:particle) { Class.new.send(:include, Laminar::Particle) }
 
@@ -40,6 +40,7 @@ module Laminar
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(step).to receive(:particle).and_return(particle)
+        allow(step).to receive(:next_step_name).and_return(nil)
         expect(particle).to receive(:call!).once
 
         flow.flow do
