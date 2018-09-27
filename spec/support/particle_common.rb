@@ -59,11 +59,11 @@ RSpec.shared_examples 'particle_common' do
   describe '#invoke' do
     let(:instance) { particle.new }
 
-    it 'raises ParticleFailed errors' do
-      expect(instance).to receive(:invoke!).and_raise(Laminar::ParticleFailed)
+    it 'raises ParticleStopped errors' do
+      expect(instance).to receive(:invoke!).and_raise(Laminar::ParticleStopped)
       expect {
         instance.invoke
-      }.to_not raise_error(Laminar::ParticleFailed)
+      }.to_not raise_error(Laminar::ParticleStopped)
     end
 
     it 'propagates ordinary errors' do
@@ -82,11 +82,11 @@ RSpec.shared_examples 'particle_common' do
       instance.invoke!
     end
 
-    it "raises ParticleFailed errors" do
-      expect(instance).to receive(:invoke!).and_raise(Laminar::ParticleFailed)
+    it "raises ParticleStopped errors" do
+      expect(instance).to receive(:invoke!).and_raise(Laminar::ParticleStopped)
       expect {
         instance.invoke!
-      }.to raise_error(Laminar::ParticleFailed)
+      }.to raise_error(Laminar::ParticleStopped)
     end
 
     it 'propagates ordinary errors' do

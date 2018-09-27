@@ -49,19 +49,19 @@ module Laminar
         flow.new.call(x: 1, y: 2)
       end
 
-      it 'raises Laminar::ParticleFailed if step fails' do
+      it 'raises Laminar::ParticleStopped if step fails' do
         allow(Laminar::Flow::Specification).to receive(:new).and_return(spec)
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(step).to receive(:particle).and_return(particle)
-        expect(particle).to receive(:call!).once { raise Laminar::ParticleFailed }
+        expect(particle).to receive(:call!).once { raise Laminar::ParticleStopped }
 
         flow.flow do
           step :step1
         end
         expect {
           flow.new.call(x: 1, y: 2)
-        }.to raise_error(Laminar::ParticleFailed)
+        }.to raise_error(Laminar::ParticleStopped)
       end
     end
   end

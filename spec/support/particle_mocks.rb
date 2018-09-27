@@ -24,7 +24,7 @@ module MockParticle
     include Laminar::Particle
 
     def call
-      context.halt(message: 'halted')
+      context.halt!(message: 'halted')
     end
   end
 

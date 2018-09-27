@@ -2,7 +2,7 @@
 
 module Laminar
   # Raised when someone calls fail!() on a Laminar::Context.
-  class ParticleFailed < StandardError
+  class ParticleStopped < StandardError
     attr_reader :context
 
     def initialize(context = nil)

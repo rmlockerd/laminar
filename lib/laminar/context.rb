@@ -12,7 +12,6 @@ module Laminar
       else
         new.merge!(context || {})
       end
-      # self === context ? context : new.merge!(context || {})
     end
 
     def initialize
@@ -32,15 +31,15 @@ module Laminar
       @halted
     end
 
-    def halt(context = {})
+    def halt!(context = {})
       @halted = true
       merge!(context)
+      raise ParticleStopped, self
     end
 
     def fail!(context = {})
-      halt(context)
       @failed = true
-      raise ParticleFailed, self
+      halt!(context)
     end
   end
 end
