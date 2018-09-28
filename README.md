@@ -1,6 +1,5 @@
 # Laminar
-[![Build Status](https://img.shields.io/travis/rmlockerd/laminar/master.svg)]
-(https://travis-ci.org/rmlockerd/laminar)
+[![Build Status](https://img.shields.io/travis/rmlockerd/laminar/master.svg)]``(https://travis-ci.org/rmlockerd/laminar)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 
@@ -103,7 +102,7 @@ The `.call` implementation always has access to the full context via
 
 #### Particle Success / Failure
 Particles have a simple mechanism for flagging success and
-failure. To signal failure, simply call `.fail` on the context.
+failure. To signal failure, simply call `.fail!` on the context.
 ```ruby
 context.fail!
 ```
@@ -112,16 +111,47 @@ There are also convenience methods for checking success/failure:
 ```ruby
 context.success? # => true by default
 context.failed? # => false
+
 context.fail!
+
+context.halted? # => true
 context.failed? # => true
 context.success? # => false
 ```
 
-The `.fail` method accepts a hash that is merged into the context,
+The `.fail!` method accepts a hash that is merged into the context,
 making it convenient to attach error information:
 ```ruby
 context.fail!(error: 'The user is allergic to bananas!')
 ```
+
+Use the `.halt!` class method to immediately stop a particle without marking it as a failure.
+
+```ruby
+context.halt!
+
+context.halted? # => true
+context.success? # => true
+context.failed? # => false
+```
+
+The `.halt!` accepts a context hash similar to `.fail!`.
+
+#### Callbacks
+
+Particles can specify one or more callbacks to execute immediately before or after the invocation of its `#call`.
+
+```ruby
+class Foo
+  include Laminar::Flow
+
+  before_call :setup  # method symbol
+  before_call { ... } # block
+
+  after_call :teardown  # method symbol
+  after_call { ... } # block
+```
+Callbacks execute in the order they are specified when there are multiple of the same kind.
 
 ### Flows
 
@@ -208,11 +238,11 @@ end
 
 #### Flow Branching
 Ordinarily particle execution is sequential in the order specified.
-However, you can optionally branch to a different label with `goto`.
+However, you can optionally branch to a different label with `branch`.
 ```ruby
   flow do
     step :do_something do
-      goto :final_step      
+      branch :final_step      
     end
     step :another_step # skipped
     step :final_step
@@ -225,7 +255,7 @@ You can use the special symbol :endflow to jump terminate the flow
 ```ruby
   flow do
     step :do_something do
-      goto :endflow
+      branch :endflow
     end
     step :another_step # skipped
     step :final_step # skipped
@@ -240,7 +270,7 @@ directives.
 ```ruby
   flow do
     step :first do
-      goto :last_step, if: :done_early?      
+      branch :last_step, if: :done_early?      
     end
     step :then_me
     step :do_something
@@ -253,7 +283,7 @@ The target of `if:` or `unless:` is a symbol naming a method on the invoking Flo
 ```ruby
   flow do
     step :first do
-      goto :last_step, if: :done_early?      
+      branch :last_step, if: :done_early?      
     end
     ...
   end
@@ -263,20 +293,47 @@ The target of `if:` or `unless:` is a symbol naming a method on the invoking Flo
   end
 ```
 
-A step can have multiple goto directives; the flow will take the first
+A step can have multiple branch directives; the flow will take the first
 branch that it finds that satisfies its specified condition (if any). If
 no condition is satisfied, execution drops to the next step.
 
 ```ruby
   flow do
    step :first do
-     goto :last_step, if: :condition1?
-     goto :do_something, if: :condition2?
+     branch :last_step, if: :condition1?
+     branch :do_something, if: :condition2?
    end
    step :then_me # executed if neither condition1 nor condition2
    step :do_something
    step :last_step
   end
+```
+
+#### Flow Callbacks
+
+A flow can specify callback(s) to run before/after every step:
+
+```ruby
+class MyFlow
+  include Laminar::Flow
+
+  before_each :thing, :thing2  # method
+  before_each { ... } # block
+
+  after_each :thing, :thing2  # method
+  after_each { ... } # block
+```
+
+The order of execution for callbacks in a flow looks like:
+
+```
+flow's before_call
+  flow's before_each
+    step1's before_call
+      <step1 invoked>
+    step1's after_call
+  flow's after_each
+flow's after_call
 ```
 
 #### Testing Particles and Flows
