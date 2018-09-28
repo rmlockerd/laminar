@@ -13,7 +13,7 @@ module Laminar
 
       valid_options %i[class].freeze
 
-      def initialize(name, options = {}, &gotos)
+      def initialize(name, options = {}, &block)
         unless name.class.method_defined?(:to_sym)
           raise ArgumentError, 'invalid name'
         end
@@ -23,7 +23,7 @@ module Laminar
         @name = name.to_sym
         @branches = []
 
-        instance_eval(&gotos) if gotos
+        instance_eval(&block) if block
       end
 
       # Return class instance of the associated particle.
@@ -31,7 +31,13 @@ module Laminar
         class_name.constantize
       end
 
-      # Add a branch specification to the step.
+      # Add a branch specification. This is typically called as
+      # part of a flow specification:
+      #
+      # flow do
+      #   step :step1
+      # end
+      #
       def branch(target, options = {})
         branches << Branch.new(target, options)
       end
@@ -45,6 +51,28 @@ module Laminar
         return if branch.nil?
 
         branch.name
+      end
+
+      # Defines a callback to run before the flow executes the step.
+      def before(*args, &block)
+        before_callbacks.concat(args)
+        before_callbacks << block if block
+      end
+
+      # Defines a callback to run after the flow executes the step.
+      def after(*args, &block)
+        after_callbacks.concat(args)
+        after_callbacks << block if block
+      end
+
+      # Return the list of before callbacks.
+      def before_callbacks
+        @before_callbacks ||= []
+      end
+
+      # Return the list of after callbacks.
+      def after_callbacks
+        @after_callbacks ||= []
       end
 
       # Return the first branch that satisfies its condition.

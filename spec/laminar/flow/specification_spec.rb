@@ -46,7 +46,7 @@ module Laminar
             expect {
               spec.before_each(:before1, :before2, :before3)
             }.to change {
-              spec.before_step_callbacks
+              spec.before_each_callbacks
             }.from([]).to([:before1, :before2, :before3])
           end
         end
@@ -59,7 +59,7 @@ module Laminar
                 x = x + 1
               end
             }.to change {
-              spec.before_step_callbacks
+              spec.before_each_callbacks
             }.from([])
           end
         end
@@ -90,7 +90,7 @@ module Laminar
               spec.before_each(:before2)
               spec.before_each(:before3)
             }.to change {
-              spec.before_step_callbacks
+              spec.before_each_callbacks
             }.from([]).to([:before1, :before2, :before3])
           end
         end
@@ -103,7 +103,7 @@ module Laminar
             expect {
               spec.after_each(:after1, :after2, :after3)
             }.to change {
-              spec.after_step_callbacks
+              spec.after_each_callbacks
             }.from([]).to([:after1, :after2, :after3])
           end
         end
@@ -116,7 +116,7 @@ module Laminar
                 x = x + 1
               end
             }.to change {
-              spec.after_step_callbacks
+              spec.after_each_callbacks
             }.from([])
           end
         end
@@ -147,7 +147,7 @@ module Laminar
               spec.after_each(:after2)
               spec.after_each(:after3)
             }.to change {
-              spec.after_step_callbacks
+              spec.after_each_callbacks
             }.from([]).to([:after1, :after2, :after3])
           end
         end

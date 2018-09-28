@@ -124,9 +124,11 @@ module Laminar
 
       def invoke_step(step)
         return if step.nil?
-        run_callbacks(flowspec.before_step_callbacks)
+        run_callbacks(flowspec.before_each_callbacks)
+        run_callbacks(step.before_callbacks)
         step.particle.call!(context)
-        run_callbacks(flowspec.after_step_callbacks)
+        run_callbacks(step.after_callbacks)
+        run_callbacks(flowspec.after_each_callbacks)
         !context.halted?
       end
 

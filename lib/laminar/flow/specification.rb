@@ -24,21 +24,21 @@ module Laminar
       end
 
       def before_each(*args, &block)
-        before_step_callbacks.concat(args)
-        before_step_callbacks << block if block
+        before_each_callbacks.concat(args)
+        before_each_callbacks << block if block
       end
 
       def after_each(*args, &block)
-        after_step_callbacks.concat(args)
-        after_step_callbacks << block if block
+        after_each_callbacks.concat(args)
+        after_each_callbacks << block if block
       end
 
-      def before_step_callbacks
-        @before_step_callbacks ||= []
+      def before_each_callbacks
+        @before_each_callbacks ||= []
       end
 
-      def after_step_callbacks
-        @after_step_callbacks ||= []
+      def after_each_callbacks
+        @after_each_callbacks ||= []
       end
 
       private

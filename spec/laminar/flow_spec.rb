@@ -40,9 +40,13 @@ module Laminar
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(step).to receive(:particle).and_return(particle)
-        allow(spec).to receive(:before_step_callbacks).and_return([])
-        allow(spec).to receive(:after_step_callbacks).and_return([])
+        allow(spec).to receive(:before_each_callbacks).and_return([])
+        allow(spec).to receive(:after_each_callbacks).and_return([])
         allow(step).to receive(:next_step_name).and_return(nil)
+        allow(spec).to receive(:after_each_callbacks).and_return([])
+        allow(step).to receive(:particle).and_return(particle)
+        allow(step).to receive(:before_callbacks).and_return([])
+        allow(step).to receive(:after_callbacks).and_return([])
         expect(particle).to receive(:call!).once
 
         flow.flow do
@@ -55,9 +59,11 @@ module Laminar
         allow(Laminar::Flow::Specification).to receive(:new).and_return(spec)
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
-        allow(spec).to receive(:before_step_callbacks).and_return([])
-        allow(spec).to receive(:after_step_callbacks).and_return([])
+        allow(spec).to receive(:before_each_callbacks).and_return([])
+        allow(spec).to receive(:after_each_callbacks).and_return([])
         allow(step).to receive(:particle).and_return(particle)
+        allow(step).to receive(:before_callbacks).and_return([])
+        allow(step).to receive(:after_callbacks).and_return([])
         expect(particle).to receive(:call!).once { raise Laminar::ParticleStopped }
 
         flow.flow do

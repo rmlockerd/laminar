@@ -69,6 +69,120 @@ module Laminar
         end
       end
 
+      describe '#before' do
+        context 'when list of symbols' do
+          let(:step) { described_class.new(:step1) }
+          it 'adds all symbols to the before queue' do
+            expect {
+              step.before(:before1, :before2, :before3)
+            }.to change {
+              step.before_callbacks
+            }.from([]).to([:before1, :before2, :before3])
+          end
+        end
+
+        context 'when a block' do
+          let(:step) { described_class.new(:step1) }
+          it 'adds the block to the before queue' do
+            expect {
+              step.before do
+                x = x + 1
+              end
+            }.to change {
+              step.before_callbacks
+            }.from([])
+          end
+        end
+
+        context 'when list of symbols + a block' do
+          let(:step) { described_class.new(:step1) }
+          let(:result) {
+            step.before(:before1, :before2) do
+              x = x + 1
+            end
+          }
+
+          it 'adds the symbols to the before queue' do
+            expect(result).to include(:before1, :before2)
+          end
+
+          it 'adds the block to the before queue' do
+            expect(result.last).to be_a(Proc)
+          end
+        end
+
+        context 'when called multiple times' do
+          let(:step) { described_class.new(:step1) }
+
+          it 'adds everything to the before queue' do
+            expect {
+              step.before(:before1)
+              step.before(:before2)
+              step.before(:before3)
+            }.to change {
+              step.before_callbacks
+            }.from([]).to([:before1, :before2, :before3])
+          end
+        end
+      end
+
+      describe '#after' do
+        context 'when list of symbols' do
+          let(:step) { described_class.new(:step1) }
+          it 'adds all symbols to the after queue' do
+            expect {
+              step.after(:after1, :after2, :after3)
+            }.to change {
+              step.after_callbacks
+            }.from([]).to([:after1, :after2, :after3])
+          end
+        end
+
+        context 'when a block' do
+          let(:step) { described_class.new(:step1) }
+          it 'adds the block to the after queue' do
+            expect {
+              step.after do
+                x = x + 1
+              end
+            }.to change {
+              step.after_callbacks
+            }.from([])
+          end
+        end
+
+        context 'when list of symbols + a block' do
+          let(:step) { described_class.new(:step1) }
+          let(:result) {
+            step.after(:after1, :after2) do
+              x = x + 1
+            end
+          }
+
+          it 'adds the symbols to the after queue' do
+            expect(result).to include(:after1, :after2)
+          end
+
+          it 'adds the block to the after queue' do
+            expect(result.last).to be_a(Proc)
+          end
+        end
+
+        context 'when called multiple times' do
+          let(:step) { described_class.new(:step1) }
+
+          it 'adds everything to the after queue' do
+            expect {
+              step.after(:after1)
+              step.after(:after2)
+              step.after(:after3)
+            }.to change {
+              step.after_callbacks
+            }.from([]).to([:after1, :after2, :after3])
+          end
+        end
+      end
+
       describe '#branch' do
         let(:step) { described_class.new(:step1, class: 'Bunny::Floppy') }
         let(:branch) { instance_double('Laminar::Flow::Branch') }

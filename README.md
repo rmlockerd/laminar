@@ -1,4 +1,4 @@
-# Laminar
+before# Laminar
 [![Build Status](https://img.shields.io/travis/rmlockerd/laminar/master.svg)]``(https://travis-ci.org/rmlockerd/laminar)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
@@ -145,11 +145,11 @@ Particles can specify one or more callbacks to execute immediately before or aft
 class Foo
   include Laminar::Flow
 
-  before_call :setup  # method symbol
-  before_call { ... } # block
+  before :setup  # method symbol
+  before { ... } # block
 
-  after_call :teardown  # method symbol
-  after_call { ... } # block
+  after :teardown  # method symbol
+  after { ... } # block
 ```
 Callbacks execute in the order they are specified when there are multiple of the same kind.
 
@@ -327,13 +327,13 @@ class MyFlow
 The order of execution for callbacks in a flow looks like:
 
 ```
-flow's before_call
+flow's before
   flow's before_each
-    step1's before_call
+    step1's before
       <step1 invoked>
-    step1's after_call
+    step1's after
   flow's after_each
-flow's after_call
+flow's after
 ```
 
 #### Testing Particles and Flows
