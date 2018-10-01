@@ -77,7 +77,7 @@ RSpec.shared_examples 'particle_common' do
   describe '#invoke! (default)' do
     let(:instance) { particle.new }
 
-    it "calls the interactor" do
+    it "calls the particle" do
       expect(instance).to receive(:call).once.with(no_args)
       instance.invoke!
     end
