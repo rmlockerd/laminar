@@ -6,8 +6,11 @@
 
 **Implemented enhancements:**
 
+- Before/after callbacks on individual flow steps [\#6](https://github.com/rmlockerd/laminar/issues/6)
 - Halt a flow without failure [\#5](https://github.com/rmlockerd/laminar/issues/5)
+- Add Travis configuration [\#3](https://github.com/rmlockerd/laminar/issues/3)
 - Add automated tests [\#2](https://github.com/rmlockerd/laminar/issues/2)
+- Add before/after particle callbacks [\#1](https://github.com/rmlockerd/laminar/issues/1)
 
 ## [v0.2.0](https://github.com/rmlockerd/laminar/tree/v0.2.0) (2018-09-27)
 **Fixed bugs:**
