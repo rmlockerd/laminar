@@ -4,7 +4,7 @@
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
 
-A simple Chain-of-Responsibility/Interactor gem that helps MVC applications organise their business logic, keeping their models and controllers skinny and their logic easily testable.
+A simple Chain-of-Responsibility/Interactor gem that helps MVC applications organise their business logic, keeping their models and controllers skinny and their logic easily testable. Individual chunks of business logic (called particles) can be easily composed into more complex chains called flows.
 
 ## Installation
 
