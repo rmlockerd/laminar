@@ -46,6 +46,12 @@ module Laminar
               described_class.new('branch', if: 'fofof')
             }.to raise_error(TypeError)
           end
+
+          it 'allows a Proc as condition target' do
+            expect {
+              described_class.new('branch', if: Proc.new {true} )
+            }.to_not raise_error
+          end
         end
       end
 
@@ -60,28 +66,55 @@ module Laminar
         end
 
         context 'when branch if: conditional' do
-          let(:branch) { described_class.new('branch1', if: :test_me) }
+          context 'when method symbol' do
+            let(:branch) { described_class.new('branch1', if: :test_me) }
 
-          it 'satisfies condition if target method returns :true' do
-            expect(target).to receive(:test_me).once.with(no_args) { true }
-            expect(branch.meets_condition?(target)).to be true
+            it 'satisfies condition if target method returns :true' do
+              expect(target).to receive(:test_me).once.with(no_args) { true }
+              expect(branch.meets_condition?(target)).to be true
+            end
+
+            it 'handles truthy/falsey conditions' do
+              expect(target).to receive(:test_me).once.with(no_args) { :banana }
+              expect(branch.meets_condition?(target)).to be_truthy
+
+              expect(target).to receive(:test_me).once.with(no_args) { nil }
+              expect(branch.meets_condition?(target)).to be_falsey
+            end
           end
 
-          it 'handles truthy/falsey conditions' do
-            expect(target).to receive(:test_me).once.with(no_args) { :banana }
-            expect(branch.meets_condition?(target)).to be_truthy
+          context 'when Proc' do
+            it 'satisfies condition if Proc evaluates to :true' do
+              branch = described_class.new('branch1', if: Proc.new { true })
+              expect(branch.meets_condition?(target)).to be true
+            end
 
-            expect(target).to receive(:test_me).once.with(no_args) { nil }
-            expect(branch.meets_condition?(target)).to be_falsey
+            it 'fails condition if Proc evaluates to :false' do
+              branch = described_class.new('branch1', if: Proc.new { false })
+              expect(branch.meets_condition?(target)).to be false
+            end
           end
         end
 
-        context 'when branch unless: conditional' do
-          let(:branch) { described_class.new('branch1', unless: :test_me) }
+        context 'when branch unless:' do
+          context 'when method symbol' do
+            let(:branch) { described_class.new('branch1', unless: :test_me) }
 
-          it 'satisfies condition if target method returns :true' do
-            expect(target).to receive(:test_me).once.with(no_args) { false }
-            expect(branch.meets_condition?(target)).to be true
+            it 'satisfies condition if target method returns :true' do
+              expect(target).to receive(:test_me).once.with(no_args) { false }
+              expect(branch.meets_condition?(target)).to be true
+            end
+          end
+          context 'when Proc' do
+            it 'satisfies condition if Proc evaluates to :false' do
+              branch = described_class.new('branch1', unless: Proc.new { false })
+              expect(branch.meets_condition?(target)).to be true
+            end
+
+            it 'fails condition if Proc evaluates to :true' do
+              branch = described_class.new('branch1', unless: Proc.new { true })
+              expect(branch.meets_condition?(target)).to be false
+            end
           end
         end
       end

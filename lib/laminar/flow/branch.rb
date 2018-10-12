@@ -40,7 +40,11 @@ module Laminar
       private
 
       def run_condition(target)
-        target.send(@condition)
+        if @condition.is_a?(Proc)
+          @condition.call()
+        else
+          target.send(@condition)
+        end
       end
 
       def define_condition(options)
@@ -48,9 +52,9 @@ module Laminar
         return if @condition_type.nil?
 
         @condition = options[@condition_type]
-        return if @condition.nil? || @condition.is_a?(Symbol)
+        return if @condition.nil? || @condition.is_a?(Symbol) || @condition.is_a?(Proc)
 
-        raise TypeError, 'condition must be a method (symbol).'
+        raise TypeError, 'condition must be a method symbol or Proc).'
       end
     end
   end
