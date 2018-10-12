@@ -1,8 +1,9 @@
 # Laminar
 
+[![Gem Version](https://badge.fury.io/rb/laminar.svg)](https://badge.fury.io/rb/laminar)
 [![Build Status](https://travis-ci.org/rmlockerd/laminar.svg?branch=master)](https://travis-ci.org/rmlockerd/laminar)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
-[![Test Coverage](https://img.shields.io/codeclimate/coverage-letter/rmlockerd/laminar.svg)](https://codeclimate.com/github/rmlockerd/laminar)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6b2d761ca042af6461e3/maintainability)](https://codeclimate.com/github/rmlockerd/laminar/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6b2d761ca042af6461e3/test_coverage)](https://codeclimate.com/github/rmlockerd/laminar/test_coverage)
 
 A simple Chain-of-Responsibility/Interactor gem that helps MVC applications organise their business logic, keeping their models and controllers skinny and their logic easily testable. Individual chunks of business logic (called particles) can be easily composed into more complex chains called flows.
 

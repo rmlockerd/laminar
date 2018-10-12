@@ -1,8 +1,18 @@
 # Change Log
 
-## [Unreleased](https://github.com/rmlockerd/laminar/tree/HEAD)
+## [v0.4.0](https://github.com/rmlockerd/laminar/tree/v0.4.0) (2018-10-12)
+[Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.3.0...v0.4.0)
 
-[Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.2.0...HEAD)
+**Implemented enhancements:**
+
+- Shorthand for branching to end [\#8](https://github.com/rmlockerd/laminar/issues/8)
+
+**Fixed bugs:**
+
+- branch if/unless don't accept blocks/Procs [\#7](https://github.com/rmlockerd/laminar/issues/7)
+
+## [v0.3.0](https://github.com/rmlockerd/laminar/tree/v0.3.0) (2018-10-01)
+[Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.2.0...v0.3.0)
 
 **Implemented enhancements:**
 
