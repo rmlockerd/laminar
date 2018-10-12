@@ -3,6 +3,50 @@
 RSpec.shared_examples 'particle_common' do
   let(:particle) { Class.new.send(:include, described_class) }
 
+  describe '.before' do
+    context 'when callback is a symbol' do
+      it 'adds to the before list' do
+        particle.before(:foo_berry)
+        expect(particle.before_list).to include(:foo_berry)
+      end
+
+      it 'appends to existing callbacks' do
+        particle.before(:foo_berry)
+        particle.before(:rum_ripple)
+        expect(particle.before_list).to contain_exactly(:foo_berry, :rum_ripple)
+      end
+    end
+
+    context 'when callback is a block' do
+      it 'adds to the before list' do
+        particle.before {context[:foo] = :bar}
+        expect(particle.before_list.first).to be_a(Proc)
+      end
+    end
+  end
+
+  describe '.after' do
+    context 'when callback is a symbol' do
+      it 'adds to the after list' do
+        particle.after(:foo_berry)
+        expect(particle.after_list).to include(:foo_berry)
+      end
+
+      it 'appends to existing callbacks' do
+        particle.after(:foo_berry)
+        particle.after(:rum_ripple)
+        expect(particle.after_list).to contain_exactly(:foo_berry, :rum_ripple)
+      end
+    end
+
+    context 'when callback is a block' do
+      it 'adds to the after list' do
+        particle.after {context[:foo] = :bar}
+        expect(particle.after_list.first).to be_a(Proc)
+      end
+    end
+  end
+
   describe '.call' do
     let(:context) { instance_double('Laminar::Context') }
     let(:inst) { double(:inst, context: context) }
