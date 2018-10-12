@@ -56,6 +56,32 @@ RSpec.describe 'Scenario' do
     end
   end
 
+  context 'when a step uses endflow keyword' do
+    let(:flow) {
+      flow_factory do
+        flow do
+          step :step1, class: 'MockParticle::WithNoArgs' do
+            endflow
+          end
+          step :step2, class: 'MockParticle::ShouldSkip'
+        end
+      end
+    }
+    let(:result) { flow.call(flatulent: :cow) }
+
+    it 'skips remaining steps' do
+      expect(result).to_not include(no_skip: true)
+    end
+
+    it 'does not mark halted' do
+      expect(result.halted?).to be false
+    end
+
+    it 'marks the context as successful' do
+      expect(result.failed?).to be false
+    end
+  end
+
   context 'when a step branches to endflow' do
     let(:flow) {
       flow_factory do
@@ -87,7 +113,7 @@ RSpec.describe 'Scenario' do
       flow_factory do
         flow do
           step :step1, class: 'MockParticle::WithNoArgs'
-          step :step2, class: 'MockParticle::WithNoArgs' 
+          step :step2, class: 'MockParticle::WithNoArgs'
         end
       end
     }
