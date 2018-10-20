@@ -14,9 +14,7 @@ module Laminar
       valid_options %i[class].freeze
 
       def initialize(name, options = {}, &block)
-        unless name.class.method_defined?(:to_sym)
-          raise ArgumentError, 'invalid name'
-        end
+        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
 
         validate_options(options)
         @class_name = (options[:class] || name).to_s.camelize

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Laminar
+  # Callback hooks for particles
   module Callbacks
     def self.included(klass)
       klass.class_eval do
@@ -34,7 +35,6 @@ module Laminar
 
     # Additional instance methods
     module InstanceMethods
-
       private
 
       def run_before_callbacks

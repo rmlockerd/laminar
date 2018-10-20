@@ -18,9 +18,7 @@ module Laminar
       attr_accessor :name, :condition, :condition_type
 
       def initialize(name, options = {})
-        unless name.class.method_defined?(:to_sym)
-          raise ArgumentError, 'invalid name'
-        end
+        raise ArgumentError, 'invalid name' unless name.class.method_defined?(:to_sym)
 
         validate_options(options)
         @name = name.to_sym
@@ -41,7 +39,7 @@ module Laminar
 
       def run_condition(target)
         if @condition.is_a?(Proc)
-          @condition.call()
+          @condition.call
         else
           target.send(@condition)
         end

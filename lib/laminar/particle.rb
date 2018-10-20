@@ -26,6 +26,7 @@ module Laminar
       end
     end
 
+    # Laminar::Particle instance methods.
     module InstanceMethods
       def initialize(context = {})
         @context = Context.build(context)
