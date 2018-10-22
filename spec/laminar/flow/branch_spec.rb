@@ -84,14 +84,22 @@ module Laminar
           end
 
           context 'when Proc' do
-            it 'satisfies condition if Proc evaluates to :true' do
+            it 'satisfies if Proc evaluates to :true' do
+              allow(target).to receive(:context).and_return(value: true)
               branch = described_class.new('branch1', if: Proc.new { true })
               expect(branch.meets_condition?(target)).to be true
             end
 
-            it 'fails condition if Proc evaluates to :false' do
+            it 'fails if Proc evaluates to :false' do
+              allow(target).to receive(:context).and_return(value: true)
               branch = described_class.new('branch1', if: Proc.new { false })
               expect(branch.meets_condition?(target)).to be false
+            end
+
+            it 'passes target/context to the Proc' do
+              allow(target).to receive(:context).and_return(value: true)
+              branch = described_class.new('branch1', if: Proc.new { |c| c[:value] })
+              expect(branch.meets_condition?(target)).to be true
             end
           end
         end
@@ -107,12 +115,20 @@ module Laminar
           end
           context 'when Proc' do
             it 'satisfies condition if Proc evaluates to :false' do
+              allow(target).to receive(:context).and_return(value: false)
               branch = described_class.new('branch1', unless: Proc.new { false })
               expect(branch.meets_condition?(target)).to be true
             end
 
             it 'fails condition if Proc evaluates to :true' do
+              allow(target).to receive(:context).and_return(value: false)
               branch = described_class.new('branch1', unless: Proc.new { true })
+              expect(branch.meets_condition?(target)).to be false
+            end
+
+            it 'passes target/context to the Proc' do
+              allow(target).to receive(:context).and_return(value: true)
+              branch = described_class.new('branch1', unless: Proc.new { |c| c[:value] })
               expect(branch.meets_condition?(target)).to be false
             end
           end

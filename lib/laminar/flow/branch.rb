@@ -39,7 +39,7 @@ module Laminar
 
       def run_condition(target)
         if @condition.is_a?(Proc)
-          @condition.call
+          @condition.call(target.context)
         else
           target.send(@condition)
         end
