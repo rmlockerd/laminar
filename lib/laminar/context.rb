@@ -31,10 +31,14 @@ module Laminar
       @halted
     end
 
-    def halt!(context = {})
+    def halt(context = {})
       @halted = true
       merge!(context)
-      raise ParticleStopped.new(self)
+    end
+
+    def halt!(context = {})
+      halt(context)
+      raise ParticleStopped, self
     end
 
     def fail!(context = {})

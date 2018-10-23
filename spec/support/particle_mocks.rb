@@ -20,6 +20,27 @@ module MockParticle
     end
   end
 
+  class BeforeSoftHalts
+    include Laminar::Particle
+
+    before { context.halt(message: 'soft halted') }
+    after {  context[:after_cb_not_skipped] = true }
+
+    def call
+      context[:particle_not_skipped] = true
+    end
+  end
+
+  class SoftHalts
+    include Laminar::Particle
+
+    after {  context[:after_cb_not_skipped] = true }
+
+    def call
+      context.halt(message: 'soft halted')
+    end
+  end
+
   class Halts
     include Laminar::Particle
 

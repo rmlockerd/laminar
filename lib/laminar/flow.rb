@@ -103,11 +103,7 @@ module Laminar
       end
 
       # Initiates evaluation of the flow.
-      # @param object the context/input on which the flow will operate. This
-      #   is usually a Hash but in simple cases can be a single object. The
-      #   implementing flow class should provide a #context_valid? method
-      #   that returns true is the given context contains the minimum required
-      #   information.
+      # @param object the context/input on which the flow will operate.
       def call(*)
         return context if flowspec.nil?
 
@@ -124,12 +120,33 @@ module Laminar
 
       def invoke_step(step)
         return if step.nil?
-        run_callbacks(flowspec.before_each_callbacks)
-        run_callbacks(step.before_callbacks)
-        step.particle.call!(context)
-        run_callbacks(step.after_callbacks)
-        run_callbacks(flowspec.after_each_callbacks)
+
+        pre_step_callbacks(step)
+        run_particle(step)
+        post_step_callbacks(step)
         !context.halted?
+      end
+
+      def post_step_callbacks(step)
+        guarded_callback(step.after_callbacks)
+        guarded_callback(flowspec.after_each_callbacks)
+      end
+
+      def pre_step_callbacks(step)
+        guarded_callback(flowspec.before_each_callbacks)
+        guarded_callback(step.before_callbacks)
+      end
+
+      def run_particle(step)
+        return if context.halted?
+
+        step.particle.call!(context)
+      end
+
+      def guarded_callback(list)
+        return if context.halted?
+
+        run_callbacks(list)
       end
 
       # Given a step, returns the next step that satisfies the

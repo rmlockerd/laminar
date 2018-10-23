@@ -31,6 +31,70 @@ RSpec.describe 'Scenario' do
     end
   end
 
+  context 'when a before cb soft halts' do
+    let(:flow) {
+      flow_factory do
+        flow do
+          step :step1, class: 'MockParticle::BeforeSoftHalts'
+          step :step2, class: 'MockParticle::ShouldSkip'
+        end
+      end
+    }
+    let(:result) { flow.call(flatulent: :cow) }
+
+    it 'does not run step' do
+      expect(result[:particle_not_skipped]).to be_falsey
+    end
+
+    it 'does not run particle after callbacks' do
+      expect(result[:after_cb_not_skipped]).to be_falsey
+    end
+
+    it 'halts the flow' do
+      expect(result.halted?).to be true
+    end
+
+    it 'marks the context as successful' do
+      expect(result.failed?).to be false
+    end
+
+    it 'merges context' do
+      expect(result[:message]).to match(/soft halted/)
+    end
+  end
+
+  context 'when a step soft halts' do
+    let(:flow) {
+      flow_factory do
+        flow do
+          step :step1, class: 'MockParticle::SoftHalts'
+          step :step2, class: 'MockParticle::ShouldSkip'
+        end
+      end
+    }
+    let(:result) { flow.call(flatulent: :cow) }
+
+    it 'skips remaining steps' do
+      expect(result).to_not include(no_skip: true)
+    end
+
+    it 'halts the flow' do
+      expect(result.halted?).to be true
+    end
+
+    it 'marks the context as successful' do
+      expect(result.failed?).to be false
+    end
+
+    it 'merges context' do
+      expect(result[:message]).to match(/soft halted/)
+    end
+
+    it 'does not run particle after callbacks' do
+      expect(result[:after_cb_not_skipped]).to be_falsey
+    end
+  end
+
   context 'when a step halts' do
     let(:flow) {
       flow_factory do
