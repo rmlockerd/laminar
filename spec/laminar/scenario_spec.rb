@@ -1,12 +1,6 @@
-RSpec.describe 'Scenario' do
-  def flow_factory(&block)
-    flow = Class.new.send(:include, Laminar::Flow)
-    flow.class_eval(&block) if block
-    flow.send(:define_method, :true_condition) { true }
-    flow.send(:define_method, :false_condition) { false }
-    flow
-  end
+require 'support/flow_spec_helpers'
 
+RSpec.describe 'Scenario' do
   context 'when flows are nested' do
   end
 

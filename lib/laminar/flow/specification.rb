@@ -23,6 +23,14 @@ module Laminar
         @prev_step = step
       end
 
+      def context_must_have(*params)
+        flow_params.concat(params.flatten)
+      end
+
+      def flow_params
+        @flow_params ||= []
+      end
+
       def before_each(*args, &block)
         before_each_callbacks.concat(args)
         before_each_callbacks << block if block

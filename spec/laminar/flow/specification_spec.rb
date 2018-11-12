@@ -153,6 +153,18 @@ module Laminar
         end
       end
 
+      describe '#context_must_have' do
+        let(:spec) { described_class.new }
+
+        it 'adds to the flow parameter list' do
+          expect {
+            spec.context_must_have([:key1, 'key2', :key3])
+          }.to change {
+            spec.flow_params
+          }.from([]).to([:key1, 'key2', :key3])
+        end
+      end
+
       describe '#step' do
         let(:spec) { described_class.new }
         let(:step1) { instance_double('Laminar::Flow::Step', name: :step1) }

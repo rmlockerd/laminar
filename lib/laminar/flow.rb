@@ -107,6 +107,7 @@ module Laminar
       def call(*)
         return context if flowspec.nil?
 
+        validate_required_context
         step = flowspec.steps[flowspec.first_step]
         loop do
           break unless invoke_step(step)
@@ -159,6 +160,19 @@ module Laminar
         end
 
         flowspec.steps[next_name]
+      end
+
+      def validate_required_context
+        missing = []
+        flowspec.flow_params.each do |param|
+          next if context.key?(param)
+
+          missing << param
+        end
+
+        return if missing.empty?
+
+        raise ArgumentError, "missing context: #{missing.join(', ')}"
       end
     end
   end

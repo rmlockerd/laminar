@@ -238,6 +238,31 @@ class CheckEquipment
 end
 ```
 
+#### Flow Parameters
+Flows do not get the benefit of keyword argument checking like ordinary
+Particles, since their #call method is implemented by the Flow mixin.
+You can, however, specify a list of required context keys in the flow
+definition itself:
+
+```ruby
+flow do
+  context_must_have :product_sku, :unit_price
+  ...
+end
+```
+
+The context is simply checked for the presence of the specified
+list of keys. If you need to do more complicated validation of
+context, use a ``#before`` callback that halts the flow if
+validation fails.
+
+Context validation happens just prior to execution of the
+first step in the flow (and any ``#before_each``) callbacks, but after
+execution of the Flow's own ``#before`` callbacks. Since you can
+manipulate context in a callback, this is useful to set up
+context required by a flow's particles that you don't necessarily
+expect your caller to provide.
+
 #### Flow Branching
 Ordinarily particle execution is sequential in the order specified.
 However, you can optionally branch to a different label with `branch`.
@@ -251,7 +276,7 @@ However, you can optionally branch to a different label with `branch`.
   end
 ```
 
-You can use the special symbol :endflow to jump terminate the flow
+You can use the endflow directive to terminate the flow gracefully
 (skipping all remaining steps).
 
 ```ruby
@@ -310,6 +335,11 @@ no condition is satisfied, execution drops to the next step.
    step :last_step
   end
 ```
+#### Halting a Flow
+If a particle calls ``#halt!`` or ``#fail!`` on its context, execution
+of any surrounding Flow (or nested flows) stops immediately via a
+``ParticleStopped`` error. To gracefully signal that an enclosing
+flow should stop without raising an error, use ``#halt`` instead.
 
 #### Flow Callbacks
 
@@ -319,11 +349,15 @@ A flow can specify callback(s) to run before/after every step:
 class MyFlow
   include Laminar::Flow
 
-  before_each :thing, :thing2  # method
-  before_each { ... } # block
+  flow do
+    before_each :thing, :thing2  # method
+    before_each { ... } # block
 
-  after_each :thing, :thing2  # method
-  after_each { ... } # block
+    after_each :thing, :thing2  # method
+    after_each { ... } # block
+
+    # steps ...
+  end
 ```
 
 The order of execution for callbacks in a flow looks like:

@@ -37,6 +37,7 @@ module Laminar
 
       it 'invokes the first step' do
         allow(Laminar::Flow::Specification).to receive(:new).and_return(spec)
+        allow(spec).to receive(:flow_params).and_return([])
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(step).to receive(:particle).and_return(particle)
@@ -57,6 +58,7 @@ module Laminar
 
       it 'raises Laminar::ParticleStopped if step fails' do
         allow(Laminar::Flow::Specification).to receive(:new).and_return(spec)
+        allow(spec).to receive(:flow_params).and_return([])
         allow(spec).to receive(:steps).and_return({step.name => step})
         allow(spec).to receive(:first_step).and_return(step.name)
         allow(spec).to receive(:before_each_callbacks).and_return([])
