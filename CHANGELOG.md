@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.5.0](https://github.com/rmlockerd/laminar/tree/v0.5.0) (2018-11-12)
+[Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.4.0...v0.5.0)
+
+**Implemented enhancements:**
+
+- Add 'soft' halt capability for flows [\#11](https://github.com/rmlockerd/laminar/issues/11)
+- Check starting context for a flow [\#9](https://github.com/rmlockerd/laminar/issues/9)
+
+**Fixed bugs:**
+
+- Branch conditionals \(if:/unless:\) do not get context passed [\#10](https://github.com/rmlockerd/laminar/issues/10)
+
 ## [v0.4.0](https://github.com/rmlockerd/laminar/tree/v0.4.0) (2018-10-12)
 [Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.3.0...v0.4.0)
 
