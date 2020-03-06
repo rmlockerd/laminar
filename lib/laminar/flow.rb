@@ -122,6 +122,7 @@ module Laminar
       def invoke_step(step)
         return if step.nil?
 
+        context[:__flow_step__] = step.name
         pre_step_callbacks(step)
         run_particle(step)
         post_step_callbacks(step)
