@@ -39,12 +39,17 @@ module Laminar
       end
 
       def invoke!
-        run_before_callbacks
-        return context if context.halted?
+        begin
+          run_before_callbacks
+          return context if context.halted?
 
-        param_list = context_slice
-        param_list.empty? ? call : call(context_slice)
-        run_after_callbacks unless context.halted?
+          param_list = context_slice
+          param_list.empty? ? call : call(context_slice)
+          run_after_callbacks unless context.halted?
+        rescue ParticleStopped
+          run_final_callbacks
+          raise
+        end
         run_final_callbacks
         context
       end
