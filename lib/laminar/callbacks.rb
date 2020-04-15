@@ -24,12 +24,21 @@ module Laminar
       end
       alias after_call after
 
+      def finalize(*args, &block)
+        final_list.concat(args)
+        final_list << block if block
+      end
+
       def before_list
         @before_list ||= []
       end
 
       def after_list
         @after_list ||= []
+      end
+
+      def final_list
+        @final_list ||= []
       end
     end
 
@@ -43,6 +52,10 @@ module Laminar
 
       def run_after_callbacks
         run_callbacks(self.class.after_list)
+      end
+
+      def run_final_callbacks
+        run_callbacks(self.class.final_list)
       end
 
       def run_callbacks(list)

@@ -1,7 +1,22 @@
-Metrics/LineLength:
+Layout/LineLength:
   Max: 99
 AllCops:
   TargetRubyVersion: 2.3.0
 
 Metrics/MethodLength:
   Max: 12
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
