@@ -1,9 +1,14 @@
 # Changelog
 
-## [v0.6.0](https://github.com/rmlockerd/laminar/tree/v0.6.0) (2020-04-15)
+## [v0.7.0](https://github.com/rmlockerd/laminar/tree/v0.7.0) (2020-06-13)
 
-- Add 'finalize' callback on particles and flows that is called after
-invocation finishes, regardless of whether particle halted.
+[Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.6.0...v0.7.0)
+
+**Fixed bugs:**
+
+- Fix 3.0-compatibility warnings with Ruby 2.7.x [\#13](https://github.com/rmlockerd/laminar/issues/13)
+
+## [v0.6.0](https://github.com/rmlockerd/laminar/tree/v0.6.0) (2020-04-15)
 
 [Full Changelog](https://github.com/rmlockerd/laminar/compare/v0.5.1...v0.6.0)
 
