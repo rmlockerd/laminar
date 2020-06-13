@@ -44,7 +44,7 @@ module Laminar
           return context if context.halted?
 
           param_list = context_slice
-          param_list.empty? ? call : call(context_slice)
+          param_list.empty? ? call : call(**context_slice)
           run_after_callbacks unless context.halted?
         rescue ParticleStopped
           run_final_callbacks
